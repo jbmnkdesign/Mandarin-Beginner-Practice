@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>初級華語互動練習</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+<div class="card">
+  <div class="muted">《學華語向前走》基礎冊＋第一冊 × TOCFL 初級 × HSK 1</div>
+  <h1>邊做邊學：初級中文核心練習</h1>
+  <div class="row">
+    <label><input id="zt" type="checkbox" checked> 顯示注音</label>
+    <label><input id="et" type="checkbox"> English help</label>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" data-mode="quiz">選擇題</button>
+  <button class="tab" data-mode="builder">排句子</button>
+  <button class="tab" data-mode="challenge">閱讀小挑戰</button>
+  <button class="tab" data-mode="review">核心詞</button>
+</div>
+
+<div id="quiz" class="card">
+  <div id="qnum" class="muted"></div>
+  <h2 id="qtext"></h2>
+  <div id="qzh" class="zh"></div>
+  <div id="qen" class="muted hidden"></div>
+  <div id="choices"></div>
+  <div id="feedback" class="muted"></div>
+  <div class="row row-spread">
+    <button id="hintBtn" class="action">提示</button>
+    <button id="nextBtn" class="action primary" disabled>下一題</button>
+  </div>
+  <div id="hint" class="muted hidden hint"></div>
+</div>
+
+<div id="builder" class="card hidden">
+  <div class="muted">Put the words in the correct order.</div>
+  <h2 id="bPrompt"></h2>
+  <div id="bAnswer" class="builder"></div>
+  <div id="bWords" class="row"></div>
+  <div id="bFeedback" class="muted"></div>
+  <div class="row" style="margin-top:12px">
+    <button id="bReset" class="action">重新打亂</button>
+    <button id="bCheck" class="action primary">檢查</button>
+    <button id="bNext" class="action">下一句</button>
+  </div>
+</div>
+
+<div id="challenge" class="card hidden">
+  <div class="muted">Read first. Then answer.</div>
+  <p>小明有一隻狗，也有一隻貓。</p>
+  <div class="zh">ㄒㄧㄠˇ ㄇㄧㄥˊ ㄧㄡˇ ㄧˋ ㄓ ㄍㄡˇ，ㄧㄝˇ ㄧㄡˇ ㄧˋ ㄓ ㄇㄠ。</div>
+  <p>狗在桌子下面，貓在椅子上面。</p>
+  <div class="zh">ㄍㄡˇ ㄗㄞˋ ㄓㄨㄛ ㄗ˙ ㄒㄧㄚˋ ㄇㄧㄢˋ，ㄇㄠ ㄗㄞˋ ㄧˇ ㄗ˙ ㄕㄤˋ ㄇㄧㄢˋ。</div>
+  <p>小明喜歡狗，但是妹妹喜歡貓。</p>
+  <div class="zh">ㄒㄧㄠˇ ㄇㄧㄥˊ ㄒㄧˇ ㄏㄨㄢ ㄍㄡˇ，ㄉㄢˋ ㄕˋ ㄇㄟˋ ㄇㄟ˙ ㄒㄧˇ ㄏㄨㄢ ㄇㄠ。</div>
+  <h2 id="cQ"></h2>
+  <div id="cChoices"></div>
+  <div id="cFeedback" class="muted"></div>
+  <button id="cNext" class="action primary challenge-next">下一題</button>
+</div>
+
+<div id="review" class="card hidden">
+  <h2>核心詞</h2>
+  <div id="wordGrid" class="grid"></div>
+</div>
+</div>
+
+<script src="app.js" defer></script>
+</body>
+</html>
