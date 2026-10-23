@@ -269,8 +269,8 @@ const builders = [
   },
   {
     p: 'I watch a movie with my friend.',
-    words: ['我', '跟', '朋友', '一起', '看', '電影'],
-    ans: ['我', '跟', '朋友', '一起', '看', '電影']
+    words: ['我', '和', '朋友', '一起', '看', '電影'],
+    ans: ['我', '和', '朋友', '一起', '看', '電影']
   },
   {
     p: 'Mom and I both like tea.',
