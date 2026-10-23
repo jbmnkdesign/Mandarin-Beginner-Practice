@@ -360,6 +360,36 @@ function shuffle(arr) {
   return a;
 }
 
+function createBalancedChoices(questions) {
+  const answerPositions = [];
+  const choicesPerQuestion = 4;
+  const baseCount = Math.floor(questions.length / choicesPerQuestion);
+  const extraCount = questions.length % choicesPerQuestion;
+
+  for (let position = 0; position < choicesPerQuestion; position++) {
+    for (let count = 0; count < baseCount; count++) {
+      answerPositions.push(position);
+    }
+  }
+
+  shuffle([0, 1, 2, 3])
+    .slice(0, extraCount)
+    .forEach((position) => answerPositions.push(position));
+
+  return shuffle(answerPositions).map((answerPosition, questionIndex) => {
+    const question = questions[questionIndex];
+    const options = shuffle(
+      question.o.filter((_, optionIndex) => optionIndex !== question.a)
+    );
+    options.splice(answerPosition, 0, question.o[question.a]);
+
+    return { options, answerIndex: answerPosition };
+  });
+}
+
+let quizChoices = createBalancedChoices(qs);
+let challengeChoices = createBalancedChoices(challenges);
+
 let qi = 0;
 let answered = false;
 let bi = 0;
@@ -387,6 +417,7 @@ $$('.tab').forEach((b) => {
 
 function renderQ() {
   const x = qs[qi];
+  const choices = quizChoices[qi];
   answered = false;
 
   $('#qnum').textContent = `第 ${qi + 1} 題 / ${qs.length}`;
@@ -400,7 +431,7 @@ function renderQ() {
   const box = $('#choices');
   box.innerHTML = '';
 
-  x.o.forEach((o, i) => {
+  choices.options.forEach((o, i) => {
     const b = document.createElement('button');
     b.type = 'button';
     b.className = 'choice';
@@ -412,10 +443,10 @@ function renderQ() {
 
       [...box.children].forEach((el, j) => {
         el.disabled = true;
-        if (j === x.a) el.classList.add('good');
+        if (j === choices.answerIndex) el.classList.add('good');
       });
 
-      if (i !== x.a) {
+      if (i !== choices.answerIndex) {
         b.classList.add('bad');
       } else {
         score += 1;
@@ -433,6 +464,7 @@ function renderQ() {
 
 $('#nextBtn')?.addEventListener('click', () => {
   qi = (qi + 1) % qs.length;
+  if (qi === 0) quizChoices = createBalancedChoices(qs);
   renderQ();
 });
 
@@ -504,6 +536,7 @@ $('#bCheck')?.addEventListener('click', () => {
 
 function renderC() {
   const x = challenges[ci];
+  const choices = challengeChoices[ci];
 
   $('#cQ').textContent = `${ci + 1}. ${x.q}`;
   $('#cFeedback').textContent = '';
@@ -511,7 +544,7 @@ function renderC() {
   const box = $('#cChoices');
   box.innerHTML = '';
 
-  x.o.forEach((o, i) => {
+  choices.options.forEach((o, i) => {
     const b = document.createElement('button');
     b.type = 'button';
     b.className = 'choice';
@@ -520,13 +553,15 @@ function renderC() {
     b.addEventListener('click', () => {
       [...box.children].forEach((el, j) => {
         el.disabled = true;
-        if (j === x.a) el.classList.add('good');
+        if (j === choices.answerIndex) el.classList.add('good');
       });
 
-      if (i !== x.a) b.classList.add('bad');
+      if (i !== choices.answerIndex) b.classList.add('bad');
 
       $('#cFeedback').textContent =
-        i === x.a ? '答對了。' : '再讀一次短文，找題目裡同樣的字。';
+        i === choices.answerIndex
+          ? '答對了。'
+          : '再讀一次短文，找題目裡同樣的字。';
     });
 
     box.appendChild(b);
@@ -537,6 +572,7 @@ function renderC() {
 
 $('#cNext')?.addEventListener('click', () => {
   ci = (ci + 1) % challenges.length;
+  if (ci === 0) challengeChoices = createBalancedChoices(challenges);
   renderC();
 });
 
